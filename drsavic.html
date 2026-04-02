@@ -1,0 +1,781 @@
+<!DOCTYPE html>
+<html lang="sr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Doktorke Savić – Stomatološka ordinacija Beograd</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --teal:    #C8431C;
+    --teal-dk: #A5340F;
+    --teal-lt: #FAEEE9;
+    --teal-md: #E05A2B;
+    --cream:   #FBF8F6;
+    --gold:    #BA7517;
+    --dark:    #231A17;
+    --muted:   #6B5248;
+    --white:   #FFFFFF;
+    --border:  rgba(200,67,28,0.13);
+    --shadow:  0 4px 32px rgba(200,67,28,0.10);
+    --r:       12px;
+    --font-h:  'Playfair Display', Georgia, serif;
+    --font-b:  'DM Sans', system-ui, sans-serif;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: var(--font-b);
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--dark);
+    background: var(--white);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ── NAV ─────────────────────────────────────────────── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 5vw; height: 70px;
+    background: rgba(255,255,255,0.96);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--border);
+    transition: box-shadow .3s;
+  }
+  nav.scrolled { box-shadow: 0 2px 20px rgba(0,0,0,0.07); }
+
+  .nav-logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+  .nav-logo-tooth {
+    width: 34px; height: 34px;
+    background: var(--teal);
+    border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .nav-logo-tooth svg { width: 18px; height: 18px; fill: white; }
+  .nav-logo-text { font-family: var(--font-h); font-size: 17px; color: var(--dark); }
+  .nav-logo-text span { color: var(--teal); }
+
+  .nav-links { display: flex; gap: 32px; list-style: none; }
+  .nav-links a {
+    text-decoration: none; font-size: 14px; font-weight: 500;
+    color: var(--muted); letter-spacing: 0.02em;
+    transition: color .2s;
+  }
+  .nav-links a:hover { color: var(--teal); }
+
+  .nav-cta {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: var(--teal); color: white;
+    padding: 9px 20px; border-radius: 50px;
+    text-decoration: none; font-size: 14px; font-weight: 500;
+    transition: background .2s, transform .15s;
+  }
+  .nav-cta:hover { background: var(--teal-dk); transform: translateY(-1px); }
+
+  .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; background: none; border: none; }
+  .hamburger span { width: 22px; height: 2px; background: var(--dark); border-radius: 2px; transition: .3s; }
+
+  @media(max-width: 768px) {
+    .nav-links, .nav-cta { display: none; }
+    .hamburger { display: flex; }
+  }
+
+  /* ── HERO ─────────────────────────────────────────────── */
+  #hero {
+    min-height: 100vh;
+    background: var(--cream);
+    display: flex; align-items: center;
+    padding: 100px 5vw 60px;
+    position: relative; overflow: hidden;
+  }
+
+  .hero-bg-circle {
+    position: absolute; right: -80px; top: 50%;
+    transform: translateY(-50%);
+    width: 520px; height: 520px;
+    background: var(--teal-lt);
+    border-radius: 50%;
+    z-index: 0;
+  }
+  .hero-bg-circle::before {
+    content: ''; position: absolute;
+    width: 360px; height: 360px;
+    background: rgba(15,110,86,0.08);
+    border-radius: 50%;
+    top: -40px; left: -40px;
+  }
+
+  .hero-inner {
+    position: relative; z-index: 1;
+    max-width: 1100px; margin: 0 auto; width: 100%;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center;
+  }
+
+  .hero-badge {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: var(--teal-lt); color: var(--teal);
+    padding: 6px 14px; border-radius: 50px; font-size: 13px; font-weight: 500;
+    margin-bottom: 20px;
+  }
+  .hero-badge::before { content: ''; width: 7px; height: 7px; background: var(--teal-md); border-radius: 50%; }
+
+  .hero-title {
+    font-family: var(--font-h);
+    font-size: clamp(36px, 5vw, 58px);
+    line-height: 1.15;
+    color: var(--dark);
+    margin-bottom: 20px;
+  }
+  .hero-title em { color: var(--teal); font-style: normal; }
+
+  .hero-sub {
+    font-size: 17px; color: var(--muted); line-height: 1.75;
+    max-width: 440px; margin-bottom: 36px;
+  }
+
+  .hero-btns { display: flex; gap: 14px; flex-wrap: wrap; }
+  .btn-primary {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: var(--teal); color: white;
+    padding: 14px 28px; border-radius: 50px;
+    text-decoration: none; font-size: 15px; font-weight: 500;
+    transition: background .2s, transform .15s; white-space: nowrap;
+  }
+  .btn-primary:hover { background: var(--teal-dk); transform: translateY(-2px); }
+  .btn-secondary {
+    display: inline-flex; align-items: center; gap: 8px;
+    border: 1.5px solid var(--teal); color: var(--teal);
+    padding: 14px 28px; border-radius: 50px;
+    text-decoration: none; font-size: 15px; font-weight: 500;
+    transition: .2s; white-space: nowrap;
+  }
+  .btn-secondary:hover { background: var(--teal-lt); }
+
+  .hero-stats {
+    display: flex; gap: 32px; margin-top: 48px;
+    padding-top: 32px; border-top: 1px solid var(--border);
+  }
+  .hero-stat-num { font-family: var(--font-h); font-size: 28px; color: var(--dark); }
+  .hero-stat-lbl { font-size: 13px; color: var(--muted); }
+
+  .hero-img-wrap {
+    position: relative; display: flex; justify-content: center; align-items: center;
+  }
+  .hero-img-card {
+    width: 100%; max-width: 420px;
+    aspect-ratio: 4/5;
+    background: var(--teal);
+    border-radius: 40% 60% 60% 40% / 40% 40% 60% 60%;
+    overflow: hidden; position: relative;
+  }
+  .hero-img-card img {
+    width: 100%; height: 100%; object-fit: cover; object-position: center top;
+    mix-blend-mode: luminosity; opacity: 0.85;
+  }
+  .hero-img-float {
+    position: absolute; bottom: -10px; left: -20px;
+    background: white; border-radius: var(--r);
+    padding: 14px 18px; box-shadow: var(--shadow);
+    display: flex; align-items: center; gap:12px;
+  }
+  .hero-img-float-icon {
+    width: 40px; height: 40px; background: var(--teal-lt); border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px;
+  }
+  .hero-img-float-text { font-size: 12px; color: var(--muted); }
+  .hero-img-float-text strong { display: block; font-size: 14px; color: var(--dark); }
+
+  @media(max-width: 900px) {
+    .hero-inner { grid-template-columns: 1fr; }
+    .hero-img-wrap { order: -1; }
+    .hero-img-card { max-width: 280px; aspect-ratio: 1; }
+    .hero-bg-circle { display: none; }
+  }
+
+  /* ── SECTION BASE ─────────────────────────────────────── */
+  section { padding: 90px 5vw; }
+  .section-inner { max-width: 1100px; margin: 0 auto; }
+
+  .section-tag {
+    display: inline-block;
+    font-size: 12px; font-weight: 500; letter-spacing: 0.12em;
+    text-transform: uppercase; color: var(--teal);
+    margin-bottom: 12px;
+  }
+
+  .section-title {
+    font-family: var(--font-h);
+    font-size: clamp(28px, 4vw, 42px);
+    line-height: 1.2; color: var(--dark);
+    margin-bottom: 16px;
+  }
+
+  .section-sub {
+    font-size: 16px; color: var(--muted); max-width: 520px; line-height: 1.75;
+  }
+
+  .section-header { margin-bottom: 56px; }
+  .section-header-center { text-align: center; }
+  .section-header-center .section-sub { margin: 0 auto; }
+
+  /* ── USLUGE ───────────────────────────────────────────── */
+  #usluge { background: var(--white); }
+
+  .usluge-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 24px;
+  }
+
+  .usluga-card {
+    background: var(--cream);
+    border: 1px solid var(--border);
+    border-radius: var(--r);
+    padding: 32px 28px;
+    transition: transform .25s, box-shadow .25s;
+    text-decoration: none; color: inherit; display: block;
+  }
+  .usluga-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow);
+  }
+
+  .usluga-icon {
+    width: 52px; height: 52px;
+    background: var(--teal-lt);
+    border-radius: 14px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 24px; margin-bottom: 20px;
+  }
+
+  .usluga-title {
+    font-family: var(--font-h); font-size: 20px;
+    color: var(--dark); margin-bottom: 10px;
+  }
+
+  .usluga-text { font-size: 14px; color: var(--muted); line-height: 1.7; }
+
+  .usluga-link {
+    display: inline-flex; align-items: center; gap: 6px;
+    color: var(--teal); font-size: 14px; font-weight: 500;
+    margin-top: 16px; text-decoration: none;
+    transition: gap .2s;
+  }
+  .usluga-link:hover { gap: 10px; }
+
+  /* ── DOKTORKE ─────────────────────────────────────────── */
+  #doktorke { background: var(--cream); }
+
+  .doktorke-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 28px;
+  }
+
+  .doktor-card {
+    background: white; border-radius: var(--r);
+    border: 1px solid var(--border);
+    overflow: hidden;
+    transition: transform .25s, box-shadow .25s;
+  }
+  .doktor-card:hover { transform: translateY(-4px); box-shadow: var(--shadow); }
+
+  .doktor-img {
+    width: 100%; aspect-ratio: 3/2; background: var(--teal-lt);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 64px;
+  }
+  .doktor-body { padding: 24px; }
+  .doktor-name { font-family: var(--font-h); font-size: 20px; margin-bottom: 4px; }
+  .doktor-spec { font-size: 13px; color: var(--teal); font-weight: 500; margin-bottom: 12px; }
+  .doktor-bio { font-size: 14px; color: var(--muted); line-height: 1.7; }
+
+  /* ── ZAŠTO MI ─────────────────────────────────────────── */
+  #zasto { background: #2A1208; color: white; }
+  #zasto .section-title { color: white; }
+  #zasto .section-tag { color: rgba(255,255,255,0.6); }
+  #zasto .section-sub { color: rgba(255,255,255,0.7); }
+
+  .zasto-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 28px; margin-top: 56px;
+  }
+
+  .zasto-item {
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: var(--r); padding: 28px 24px;
+    transition: background .2s;
+  }
+  .zasto-item:hover { background: rgba(255,255,255,0.10); }
+
+  .zasto-num {
+    font-family: var(--font-h); font-size: 36px;
+    color: var(--teal-md); margin-bottom: 12px;
+  }
+  .zasto-title { font-size: 17px; font-weight: 500; color: white; margin-bottom: 8px; }
+  .zasto-text { font-size: 14px; color: rgba(255,255,255,0.65); line-height: 1.7; }
+
+  /* ── AKTUELNOSTI ─────────────────────────────────────────── */
+  #aktuelnosti { background: white; }
+
+  .blog-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 24px;
+  }
+
+  .blog-card {
+    border: 1px solid var(--border); border-radius: var(--r);
+    overflow: hidden; text-decoration: none; color: inherit;
+    display: block; transition: transform .25s, box-shadow .25s;
+  }
+  .blog-card:hover { transform: translateY(-4px); box-shadow: var(--shadow); }
+
+  .blog-img {
+    width: 100%; aspect-ratio: 16/9;
+    background: var(--teal-lt);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 40px;
+  }
+
+  .blog-body { padding: 24px; }
+  .blog-cat {
+    display: inline-block; background: var(--teal-lt); color: var(--teal);
+    font-size: 11px; font-weight: 500; letter-spacing: .08em; text-transform: uppercase;
+    padding: 4px 10px; border-radius: 50px; margin-bottom: 12px;
+  }
+  .blog-title { font-family: var(--font-h); font-size: 18px; margin-bottom: 10px; }
+  .blog-text { font-size: 14px; color: var(--muted); }
+
+  /* ── KONTAKT ─────────────────────────────────────────────── */
+  #kontakt { background: var(--cream); }
+
+  .kontakt-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: start;
+  }
+
+  .kontakt-info { display: flex; flex-direction: column; gap: 24px; }
+
+  .kontakt-item {
+    display: flex; gap: 16px; align-items: flex-start;
+  }
+  .kontakt-item-icon {
+    width: 44px; height: 44px; min-width: 44px;
+    background: var(--teal-lt); border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px;
+  }
+  .kontakt-item-lbl { font-size: 12px; text-transform: uppercase; letter-spacing: .1em; color: var(--muted); margin-bottom: 2px; font-weight: 500; }
+  .kontakt-item-val { font-size: 16px; color: var(--dark); font-weight: 500; }
+  .kontakt-item-val a { color: var(--teal); text-decoration: none; }
+  .kontakt-item-val a:hover { text-decoration: underline; }
+
+  .kontakt-cta {
+    background: var(--teal); color: white; border: none; cursor: pointer;
+    padding: 14px 28px; border-radius: 50px; font-size: 15px; font-weight: 500;
+    font-family: var(--font-b); transition: background .2s, transform .15s;
+    display: inline-flex; align-items: center; gap: 8px; width: fit-content;
+    text-decoration: none;
+  }
+  .kontakt-cta:hover { background: var(--teal-dk); transform: translateY(-2px); }
+
+  .mapa-wrap {
+    border-radius: var(--r); overflow: hidden;
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow);
+  }
+  .mapa-wrap iframe { display: block; width: 100%; height: 380px; border: none; }
+
+  @media(max-width: 768px) {
+    .kontakt-grid { grid-template-columns: 1fr; }
+    .hero-stats { flex-wrap: wrap; gap: 20px; }
+  }
+
+  /* ── FOOTER ───────────────────────────────────────────── */
+  footer {
+    background: #1E0E06; color: rgba(255,255,255,0.65);
+    padding: 48px 5vw 32px;
+  }
+  .footer-inner {
+    max-width: 1100px; margin: 0 auto;
+    display: flex; justify-content: space-between; align-items: center;
+    flex-wrap: wrap; gap: 20px;
+  }
+  .footer-logo { font-family: var(--font-h); font-size: 18px; color: white; }
+  .footer-logo span { color: var(--teal-md); }
+  .footer-links { display: flex; gap: 24px; }
+  .footer-links a { color: rgba(255,255,255,0.5); text-decoration: none; font-size: 14px; transition: color .2s; }
+  .footer-links a:hover { color: white; }
+  .footer-cr { font-size: 12px; margin-top: 32px; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.08); text-align: center; }
+
+  /* ── ANIMATIONS ───────────────────────────────────────── */
+  .fade-in { opacity: 0; transform: translateY(24px); transition: opacity .6s ease, transform .6s ease; }
+  .fade-in.visible { opacity: 1; transform: none; }
+
+  /* ── RADNO VREME BADGE ────────────────────────────────── */
+  .radno-badge {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: #FAEEE9; border: 1px solid rgba(200,67,28,0.20);
+    color: var(--teal); padding: 8px 16px; border-radius: 50px;
+    font-size: 14px; font-weight: 500; margin-top: 16px;
+  }
+  .radno-dot { width: 8px; height: 8px; background: var(--teal-md); border-radius: 50%; animation: pulse 2s infinite; }
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
+</style>
+</head>
+<body>
+
+<!-- ── NAV ──────────────────────────────────────────────── -->
+<nav id="navbar">
+  <a class="nav-logo" href="#hero">
+    <div class="nav-logo-tooth">
+      <svg viewBox="0 0 24 24"><path d="M12 2C9 2 7 4 6 6C5 8 5 10 6 12C7 14 8 16 8 19C8 21 9 22 10 22C11 22 11 21 12 19C13 21 13 22 14 22C15 22 16 21 16 19C16 16 17 14 18 12C19 10 19 8 18 6C17 4 15 2 12 2Z"/></svg>
+    </div>
+    <span class="nav-logo-text">Doktorke <span>Savić</span></span>
+  </a>
+
+  <ul class="nav-links">
+    <li><a href="#usluge">Usluge</a></li>
+    <li><a href="#doktorke">Doktorke</a></li>
+    <li><a href="#aktuelnosti">Aktuelnosti</a></li>
+    <li><a href="#kontakt">Kontakt</a></li>
+  </ul>
+
+  <a class="nav-cta" href="tel:0692426281">📞 Zakazivanje</a>
+  <button class="hamburger" onclick="toggleMenu()">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- ── HERO ──────────────────────────────────────────────── -->
+<section id="hero">
+  <div class="hero-bg-circle"></div>
+  <div class="hero-inner">
+    <div class="hero-content">
+      <div class="hero-badge">Stomatološka ordinacija · Zvezdara, Beograd</div>
+      <h1 class="hero-title">
+        Vaš osmeh<br>u <em>sigurnim rukama</em>
+      </h1>
+      <p class="hero-sub">
+        Stomatološka ordinacija Savić pruža sveobuhvatnu stomatološku zaštitu za celu porodicu — od preventive do protetike, uz individualni pristup svakom pacijentu.
+      </p>
+      <div class="hero-btns">
+        <a class="btn-primary" href="tel:0692426281">📞 Zakažite pregled</a>
+        <a class="btn-secondary" href="#usluge">Naše usluge →</a>
+      </div>
+      <div class="hero-stats">
+        <div>
+          <div class="hero-stat-num">20+</div>
+          <div class="hero-stat-lbl">godina iskustva</div>
+        </div>
+        <div>
+          <div class="hero-stat-num">6</div>
+          <div class="hero-stat-lbl">stomatoloških usluga</div>
+        </div>
+        <div>
+          <div class="hero-stat-num">100%</div>
+          <div class="hero-stat-lbl">posvećenost pacijentu</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="hero-img-wrap">
+      <div class="hero-img-card">
+        <!-- Placeholder — zameniti pravom fotografijom -->
+        <div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:100px;background:var(--teal-lt);">🦷</div>
+      </div>
+      <div class="hero-img-float">
+        <div class="hero-img-float-icon">📅</div>
+        <div class="hero-img-float-text">
+          <strong>Radno vreme</strong>
+          Ponedeljak – Petak, 12–20h
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── USLUGE ────────────────────────────────────────────── -->
+<section id="usluge">
+  <div class="section-inner">
+    <div class="section-header fade-in">
+      <span class="section-tag">Šta nudimo</span>
+      <h2 class="section-title">Naše stomatološke usluge</h2>
+      <p class="section-sub">Od redovnih pregleda do složenih protetskih radova — brinemo o Vašem oralnom zdravlju na svakom koraku.</p>
+    </div>
+
+    <div class="usluge-grid">
+      <div class="usluga-card fade-in">
+        <div class="usluga-icon">🦷</div>
+        <div class="usluga-title">Protetika</div>
+        <p class="usluga-text">Fiksne i mobilne zubne proteze, krunice i mostovi — vraćamo Vam osmeh i funkcionalnost sa najboljim materijalima.</p>
+        <span class="usluga-link">Saznajte više →</span>
+      </div>
+
+      <div class="usluga-card fade-in">
+        <div class="usluga-icon">🔬</div>
+        <div class="usluga-title">Lečenje i plombiranje</div>
+        <p class="usluga-text">Modernim metodama lečenja karijesa i endodontskim tretmanom čuvamo Vaše zube i sprečavamo napredovanje bolesti.</p>
+        <span class="usluga-link">Saznajte više →</span>
+      </div>
+
+      <div class="usluga-card fade-in">
+        <div class="usluga-icon">🩺</div>
+        <div class="usluga-title">Parodontologija</div>
+        <p class="usluga-text">Lečenje bolesti desni i potpornog aparata zuba — ključ za dugotrajan, zdrav osmeh i stabilnost zuba.</p>
+        <span class="usluga-link">Saznajte više →</span>
+      </div>
+
+      <div class="usluga-card fade-in">
+        <div class="usluga-icon">⚕️</div>
+        <div class="usluga-title">Oralna hirurgija</div>
+        <p class="usluga-text">Vađenje zuba, hirurška ekstrakcija umnjaka i manje oralne operacije u ugodnom ambijentu ordinacije.</p>
+        <span class="usluga-link">Saznajte više →</span>
+      </div>
+
+      <div class="usluga-card fade-in">
+        <div class="usluga-icon">👶</div>
+        <div class="usluga-title">Dečija stomatologija</div>
+        <p class="usluga-text">Preventivni pregledi, zalivanje fisura i lečenje mlečnih zuba — sa posebnom pažnjom i strpljenjem za naše najmlađe pacijente.</p>
+        <span class="usluga-link">Saznajte više →</span>
+      </div>
+
+      <div class="usluga-card fade-in">
+        <div class="usluga-icon">😁</div>
+        <div class="usluga-title">Ortopedija vilica</div>
+        <p class="usluga-text">Korekcija nepravilnog položaja zuba i vilica — za pravilan zagriz i estetski izgled osmeha, u svakom uzrastu.</p>
+        <span class="usluga-link">Saznajte više →</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── DOKTORKE ───────────────────────────────────────────── -->
+<section id="doktorke">
+  <div class="section-inner">
+    <div class="section-header section-header-center fade-in">
+      <span class="section-tag">Naš tim</span>
+      <h2 class="section-title">Upoznajte doktorke Savić</h2>
+      <p class="section-sub">Porodična ordinacija sa dugogodišnjom tradicijom i strašću prema stomatologiji i zdravlju pacijenata.</p>
+    </div>
+
+    <div class="doktorke-grid">
+      <div class="doktor-card fade-in">
+        <div class="doktor-img">👩‍⚕️</div>
+        <!-- Zameniti pravom fotografijom: <img src="slike/jovana-savic.jpg" alt="Dr Jovana Savić"> -->
+        <div class="doktor-body">
+          <div class="doktor-name">Dr Jovana Savić</div>
+          <div class="doktor-spec">Opšta stomatologija · Protetika</div>
+          <p class="doktor-bio">Specijalista opšte stomatologije sa višegodišnjim iskustvom u protetici i estetskoj stomatologiji. Redovno se usavršava na domaćim i međunarodnim kursevima.</p>
+        </div>
+      </div>
+
+      <div class="doktor-card fade-in">
+        <div class="doktor-img">👩‍⚕️</div>
+        <div class="doktor-body">
+          <div class="doktor-name">Dr Mira Savić</div>
+          <div class="doktor-spec">Dečija stomatologija · Parodontologija</div>
+          <p class="doktor-bio">Specijalizovana za dečiju stomatologiju i parodontologiju. Poznata po strpljivom pristupu najmlađim pacijentima i preventivnim programima.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── ZAŠTO MI ───────────────────────────────────────────── -->
+<section id="zasto">
+  <div class="section-inner">
+    <div class="section-header fade-in">
+      <span class="section-tag">Naše prednosti</span>
+      <h2 class="section-title">Zašto izabrati ordinaciju Savić?</h2>
+      <p class="section-sub">Trudimo se da svaki pacijent u ordinaciji oseća sigurnost, pažnju i profesionalizam.</p>
+    </div>
+
+    <div class="zasto-grid">
+      <div class="zasto-item fade-in">
+        <div class="zasto-num">01</div>
+        <div class="zasto-title">Rad isključivo po zakazivanju</div>
+        <p class="zasto-text">Svaki pacijent ima puno vreme i pažnju svog terapeuta — bez čekanja i žurbe.</p>
+      </div>
+      <div class="zasto-item fade-in">
+        <div class="zasto-num">02</div>
+        <div class="zasto-title">Moderna oprema</div>
+        <p class="zasto-text">Koristimo savremena dijagnostička i terapeutska sredstva za precizno i bezbedno lečenje.</p>
+      </div>
+      <div class="zasto-item fade-in">
+        <div class="zasto-num">03</div>
+        <div class="zasto-title">Porodična ordinacija</div>
+        <p class="zasto-text">Brinemo o svim uzrastima — od najmlađih pacijenata do starijih članova porodice, pod jednim krovom.</p>
+      </div>
+      <div class="zasto-item fade-in">
+        <div class="zasto-num">04</div>
+        <div class="zasto-title">Prijatan ambijent</div>
+        <p class="zasto-text">Opuštena atmosfera i pažljiv tim koji razume strahove pacijenata i čini sve da pregled bude ugodan.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── AKTUELNOSTI ───────────────────────────────────────── -->
+<section id="aktuelnosti">
+  <div class="section-inner">
+    <div class="section-header fade-in">
+      <span class="section-tag">Saznajte više</span>
+      <h2 class="section-title">Aktuelnosti i saveti</h2>
+      <p class="section-sub">Korisni saveti i novosti iz naše ordinacije — za zdravije zube i bolji osmeh.</p>
+    </div>
+
+    <div class="blog-grid">
+      <a class="blog-card fade-in" href="#">
+        <div class="blog-img">🪥</div>
+        <div class="blog-body">
+          <span class="blog-cat">Saveti</span>
+          <div class="blog-title">Saveti dr Savić o pravilnom pranju zuba</div>
+          <p class="blog-text">Doktorke Savić ukazuju na pravilnu tehniku pranja zuba i greške koje često nenamerno pravimo u toj svakodnevnoj navici.</p>
+        </div>
+      </a>
+
+      <a class="blog-card fade-in" href="#">
+        <div class="blog-img">🤰</div>
+        <div class="blog-body">
+          <span class="blog-cat">Zdravlje</span>
+          <div class="blog-title">Nega i lečenje zuba u trudnoći</div>
+          <p class="blog-text">Stomatološka ordinacija Savić pomaže da se rešite zabluda vezanih za stomatološka stanja i intervencije u trudnoći.</p>
+        </div>
+      </a>
+
+      <a class="blog-card fade-in" href="#">
+        <div class="blog-img">🏥</div>
+        <div class="blog-body">
+          <span class="blog-cat">O nama</span>
+          <div class="blog-title">Prvi put u ordinaciji Savić?</div>
+          <p class="blog-text">Da bi svaki pacijent imao maksimalnu posvećenost terapeuta, radimo isključivo po principu zakazivanja.</p>
+        </div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ── KONTAKT ────────────────────────────────────────────── -->
+<section id="kontakt">
+  <div class="section-inner">
+    <div class="section-header fade-in">
+      <span class="section-tag">Pronađite nas</span>
+      <h2 class="section-title">Kontakt i lokacija</h2>
+      <p class="section-sub">Nalazimo se u Zvezdari, u Krfskoj ulici. Zakažite pregled telefonom ili e-mailom.</p>
+    </div>
+
+    <div class="kontakt-grid fade-in">
+      <div class="kontakt-info">
+        <div class="kontakt-item">
+          <div class="kontakt-item-icon">📍</div>
+          <div>
+            <div class="kontakt-item-lbl">Adresa</div>
+            <div class="kontakt-item-val">Krfska 20, Zvezdara<br>Beograd, Srbija</div>
+          </div>
+        </div>
+
+        <div class="kontakt-item">
+          <div class="kontakt-item-icon">📞</div>
+          <div>
+            <div class="kontakt-item-lbl">Telefon</div>
+            <div class="kontakt-item-val">
+              <a href="tel:0692426281">069 24 26 281</a><br>
+              <a href="tel:0116426281">011 64 26 281</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="kontakt-item">
+          <div class="kontakt-item-icon">✉️</div>
+          <div>
+            <div class="kontakt-item-lbl">E-mail</div>
+            <div class="kontakt-item-val"><a href="mailto:jovana@drsavic.rs">jovana@drsavic.rs</a></div>
+          </div>
+        </div>
+
+        <div class="kontakt-item">
+          <div class="kontakt-item-icon">🕐</div>
+          <div>
+            <div class="kontakt-item-lbl">Radno vreme</div>
+            <div class="kontakt-item-val">Ponedeljak – Petak<br>12:00 – 20:00</div>
+            <div class="radno-badge">
+              <span class="radno-dot"></span>
+              Otvoreno danas
+            </div>
+          </div>
+        </div>
+
+        <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:8px;">
+          <a class="kontakt-cta" href="tel:0692426281">📞 Pozovite odmah</a>
+          <a class="kontakt-cta" href="https://www.facebook.com/pages/Doktorke-Savi%C4%87/197126603653197" target="_blank" style="background:var(--teal-md);">Facebook →</a>
+        </div>
+      </div>
+
+      <div class="mapa-wrap">
+        <iframe
+          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2830.0!2d20.508!3d44.793!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x475a7112c36fbd5b%3A0x1!2sKrfska+20%2C+Beograd!5e0!3m2!1ssr!2srs!4v1"
+          loading="lazy"
+          referrerpolicy="no-referrer-when-downgrade"
+          title="Lokacija ordinacije Doktorke Savić">
+        </iframe>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── FOOTER ─────────────────────────────────────────────── -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-logo">Doktorke <span>Savić</span></div>
+    <div class="footer-links">
+      <a href="#usluge">Usluge</a>
+      <a href="#doktorke">O nama</a>
+      <a href="#kontakt">Kontakt</a>
+      <a href="https://www.facebook.com/pages/Doktorke-Savi%C4%87/197126603653197" target="_blank">Facebook</a>
+    </div>
+  </div>
+  <div class="footer-inner footer-cr">
+    © 2025 Ordinacija opšte stomatologije Jovana & Mira Savić · Sva prava zadržana
+  </div>
+</footer>
+
+<script>
+  // Nav scroll effect
+  const nav = document.getElementById('navbar');
+  window.addEventListener('scroll', () => {
+    nav.classList.toggle('scrolled', window.scrollY > 20);
+  });
+
+  // Hamburger (mobile)
+  function toggleMenu() {
+    const links = document.querySelector('.nav-links');
+    const cta = document.querySelector('.nav-cta');
+    if (links.style.display === 'flex') {
+      links.style.display = '';
+      cta.style.display = '';
+    } else {
+      links.style.cssText = 'display:flex;flex-direction:column;position:fixed;top:70px;left:0;right:0;background:white;padding:20px 5vw;gap:16px;border-bottom:1px solid rgba(0,0,0,0.08);z-index:99;';
+      cta.style.display = '';
+    }
+  }
+
+  // Fade-in on scroll
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((e, i) => {
+      if (e.isIntersecting) {
+        setTimeout(() => e.target.classList.add('visible'), i * 80);
+        observer.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.12 });
+
+  document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
